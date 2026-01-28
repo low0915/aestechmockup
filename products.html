@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AESTECH Product Catalogue - Advanced skincare laboratory formulations.">
+    <title>Products - AESTECH Laboratory Skincare</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="products-page">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu nav-menu-left">
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="products.html" class="nav-link active">Products</a></li>
+                <li><a href="index.html#strategy" class="nav-link">Our Approach</a></li>
+            </ul>
+            <a href="index.html" class="logo">AESTECH</a>
+            <ul class="nav-menu nav-menu-right">
+                <li><a href="index.html#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="index.html#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Banner Slider -->
+        <section class="product-banner-slider">
+            <div class="banner-slides">
+                <!-- Slide 1 -->
+                <div class="banner-slide active">
+                    <div class="banner-background" id="banner-bg-1"></div>
+                    <div class="banner-overlay"></div>
+                    <div class="banner-content">
+                        <h2 class="banner-title">RESTORATIVE FACE OIL</h2>
+                        <p class="banner-subtitle">Advanced Skincare Formula</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="banner-slide">
+                    <div class="banner-background" id="banner-bg-2"></div>
+                    <div class="banner-overlay"></div>
+                    <div class="banner-content">
+                        <h2 class="banner-title">DEEP SLEEP TONIC</h2>
+                        <p class="banner-subtitle">Botanical Wellness</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="banner-slide">
+                    <div class="banner-background" id="banner-bg-3"></div>
+                    <div class="banner-overlay"></div>
+                    <div class="banner-content">
+                        <h2 class="banner-title">NUTRIENT CAPSULE</h2>
+                        <p class="banner-subtitle">Pure Superblend</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Navigation Dots -->
+            <div class="banner-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+            </div>
+        </section>
+
+        <div class="container container-1440">
+
+            <!-- Filter Bar -->
+            <header class="catalog-header">
+                <ul class="category-filters">
+                    <li class="filter-item active" data-filter="all">SHOW ALL <span class="count">76</span></li>
+                    <li class="filter-item" data-filter="bath-body">BATH & BODY <span class="count">27</span></li>
+                    <li class="filter-item" data-filter="tonics">TONICS <span class="count">8</span></li>
+                    <li class="filter-item" data-filter="skincare">SKINCARE <span class="count">17</span></li>
+                    <li class="filter-item" data-filter="superblends">SUPERBLENDS AND POWDERS <span
+                            class="count">24</span></li>
+                    <li class="filter-item" data-filter="refills">REFILLS <span class="count">5</span></li>
+                    <li class="filter-item" data-filter="aura-mists">AURA MISTS <span class="count">10</span></li>
+                </ul>
+                <div class="filter-sort">
+                    <span class="sort-icon">⇅</span>
+                </div>
+            </header>
+
+            <!-- Products Grid -->
+            <section class="products-catalog-grid">
+                <!-- Product 1 -->
+                <article class="product-catalog-card" data-category="tonics">
+                    <div class="product-image-container">
+                        <img src="" alt="Deep Sleep Tonic" id="catalog-p1" class="catalog-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-catalog-title">DEEP SLEEP TONIC</h3>
+                        <div class="product-expandable">
+                            <button class="expand-btn">View Description</button>
+                            <div class="expand-content">
+                                <p>A soothing blend of botanical extracts designed to improve sleep quality and calm the
+                                    mind before rest.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 2 -->
+                <article class="product-catalog-card" data-category="skincare">
+                    <div class="product-image-container">
+                        <img src="" alt="Restorative Face Oil" id="catalog-p2" class="catalog-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-catalog-title">RESTORATIVE FACE OIL</h3>
+                        <div class="product-expandable">
+                            <button class="expand-btn">View Description</button>
+                            <div class="expand-content">
+                                <p>Nourishing oil complex with Vitamin E and Jojoba to restore skin's natural radiance
+                                    and elasticity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 3 -->
+                <article class="product-catalog-card" data-category="bath-body">
+                    <div class="product-image-container">
+                        <img src="" alt="Hand Wash" id="catalog-p3" class="catalog-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-catalog-title">HAND WASH</h3>
+                        <div class="product-expandable">
+                            <button class="expand-btn">View Description</button>
+                            <div class="expand-content">
+                                <p>Gentle cleansing formula with antiseptic properties and a refreshing citrus scent.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 4 -->
+                <article class="product-catalog-card" data-category="skincare">
+                    <div class="product-image-container">
+                        <img src="" alt="Instant Hydration Serum" id="catalog-p4" class="catalog-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-catalog-title">INSTANT HYDRATION SERUM</h3>
+                        <div class="product-expandable">
+                            <button class="expand-btn">View Description</button>
+                            <div class="expand-content">
+                                <p>High-concentration hyaluronic acid serum for instant moisture lock and skin plumping
+                                    effect.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 5 -->
+                <article class="product-catalog-card" data-category="superblends">
+                    <div class="product-image-container">
+                        <img src="" alt="Nutrient Capsule" id="catalog-p5" class="catalog-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-catalog-title">NUTRIENT CAPSULE</h3>
+                        <div class="product-expandable">
+                            <button class="expand-btn">View Description</button>
+                            <div class="expand-content">
+                                <p>Pure nutrient extract in biodegradable capsules for maximum potency and targeted skin
+                                    repair.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 6 -->
+                <article class="product-catalog-card" data-category="bath-body">
+                    <div class="product-image-container">
+                        <img src="" alt="Body Oil" id="catalog-p6" class="catalog-img">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-catalog-title">THE IKKARIAN BODY OIL</h3>
+                        <div class="product-expandable">
+                            <button class="expand-btn">View Description</button>
+                            <div class="expand-content">
+                                <p>Deeply moisturizing body oil inspired by Mediterranean botanicals for soft, supple
+                                    skin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Pagination -->
+            <footer class="catalog-pagination">
+                <ul class="pagination-list">
+                    <li class="active">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>...</li>
+                    <li>7</li>
+                </ul>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container container-1440">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>AESTECH</h3>
+                    <p>
+                        Laboratory-crafted skincare solutions that combine scientific precision
+                        with timeless elegance. Experience the future of beauty.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <ul class="footer-links">
+                        <li><a href="products.html">Serums</a></li>
+                        <li><a href="products.html">Moisturizers</a></li>
+                        <li><a href="products.html">Cleansers</a></li>
+                        <li><a href="products.html">Treatments</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#strategy">Our Approach</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:info@aestech.com">info@aestech.com</a></li>
+                        <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                        <li><a href="#">Press Inquiries</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 AESTECH. All rights reserved. Crafted with precision and care.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/main.js"></script>
+</body>
+
+</html>

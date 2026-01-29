@@ -77,69 +77,75 @@
   </section>
 
   <!-- Products Section -->
+  <!-- Products Section -->
   <section class="products section" id="products">
     <div class="container">
-      <div class="section-title">
-        <p class="section-subtitle">Our Collection</p>
+      <!-- New Header Layout -->
+      <div class="products-header-row">
         <h2>Product Categories</h2>
+        <a href="products.html" class="discover-link">Discover all →</a>
       </div>
 
-      <div class="products-grid">
-        <!-- Product 1: Serums -->
-        <div class="product-card">
-          <div class="product-image">
-            <img src="images/serums.jpg" alt="Advanced Serums" id="product-serums">
-          </div>
-          <p class="product-category">Advanced Care</p>
-          <h3 class="product-title">Precision Serums</h3>
-          <p class="product-description">
-            Concentrated formulations designed to target specific skin concerns with
-            clinical precision. Each serum is crafted with active ingredients at
-            optimal concentrations for maximum efficacy.
-          </p>
+      <!-- Split Layout: Filters (Left) + Carousel (Right) -->
+      <div class="products-split-layout">
+
+        <!-- Filters (Left) -->
+        <div class="products-filters-col">
+          <ul class="home-filters">
+            <li class="home-filter-item active" data-filter="skin">Skin</li>
+            <li class="home-filter-item" data-filter="body">Body</li>
+            <li class="home-filter-item" data-filter="hair">Hair</li>
+            <li class="home-filter-item" data-filter="all">All Products</li>
+          </ul>
         </div>
 
-        <!-- Product 2: Moisturizers -->
-        <div class="product-card">
-          <div class="product-image">
-            <img src="images/moisturizers.jpg" alt="Hydration Solutions" id="product-moisturizers">
+        <!-- Carousel (Right) -->
+        <div class="products-carousel-col">
+          <div class="products-carousel" id="home-products-carousel">
+            <!-- Carousel content will be populated by JS or static placeholders initially -->
+
+            <!-- Item 1 -->
+            <div class="home-product-card">
+              <div class="home-product-image">
+                <img src="images/serums.jpg" alt="Acne series" id="home-p1">
+              </div>
+              <p class="home-product-title">Acne series</p>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="home-product-card">
+              <div class="home-product-image">
+                <img src="images/treatments.jpg" alt="Whitening series" id="home-p2">
+              </div>
+              <p class="home-product-title">Whitening series</p>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="home-product-card">
+              <div class="home-product-image">
+                <img src="images/cleaners.jpg" alt="Anti aging series" id="home-p3">
+              </div>
+              <p class="home-product-title">Anti aging series</p>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="home-product-card">
+              <div class="home-product-image">
+                <img src="images/moisturizers.jpg" alt="Sensitive series" id="home-p4">
+              </div>
+              <p class="home-product-title">Sensitive series</p>
+            </div>
+
+            <!-- End Card -->
+            <div class="home-product-card end-card">
+              <div class="end-card-content">
+                <a href="products.html" class="discover-btn">Discover more →</a>
+              </div>
+            </div>
+
           </div>
-          <p class="product-category">Daily Essentials</p>
-          <h3 class="product-title">Hydration Solutions</h3>
-          <p class="product-description">
-            Luxurious moisturizers that restore and maintain your skin's natural
-            moisture barrier. Formulated with hyaluronic acid and botanical extracts
-            for all-day hydration.
-          </p>
         </div>
 
-        <!-- Product 3: Cleansers -->
-        <div class="product-card">
-          <div class="product-image">
-            <img src="images/cleansers.jpg" alt="Gentle Cleansers" id="product-cleansers">
-          </div>
-          <p class="product-category">Foundation</p>
-          <h3 class="product-title">Gentle Cleansers</h3>
-          <p class="product-description">
-            pH-balanced cleansing systems that purify without stripping. Our gentle
-            formulas remove impurities while preserving your skin's natural protective
-            oils and microbiome.
-          </p>
-        </div>
-
-        <!-- Product 4: Treatments -->
-        <div class="product-card">
-          <div class="product-image">
-            <img src="images/treatments.jpg" alt="Targeted Treatments" id="product-treatments">
-          </div>
-          <p class="product-category">Specialized</p>
-          <h3 class="product-title">Targeted Treatments</h3>
-          <p class="product-description">
-            Intensive treatment solutions for specific skin challenges. From anti-aging
-            to brightening, each treatment is backed by clinical research and proven
-            results.
-          </p>
-        </div>
       </div>
     </div>
   </section>
@@ -147,53 +153,81 @@
   <!-- Strategy Section -->
   <section class="strategy section" id="strategy">
     <div class="container">
-      <div class="section-title">
-        <p class="section-subtitle" style="color: var(--color-medium-gray);">Our Philosophy</p>
-        <h2>The AESTECH Approach</h2>
+      <div class="section-title"
+        style="text-align: left; margin-bottom: var(--space-lg); transform: none; animation: none; opacity: 1;">
+        <h2>Everything You need in One Place</h2>
       </div>
 
       <div class="strategy-grid">
-        <!-- Strategy 1 -->
+        <!-- Item 1 -->
         <div class="strategy-item">
-          <div class="strategy-icon">R</div>
-          <h3>Research-Driven</h3>
+          <h3>Ideas Provide</h3>
           <p>
-            Every formula begins with extensive research. Our in-house laboratory
-            conducts rigorous studies to identify the most effective ingredients
-            and optimal concentrations.
+            Conceptualizing unique brand identities and market entry points.
           </p>
         </div>
 
-        <!-- Strategy 2 -->
+        <!-- Item 2 -->
         <div class="strategy-item">
-          <div class="strategy-icon">P</div>
-          <h3>Pure Ingredients</h3>
+          <h3>Formula R&D and Bottle Selection</h3>
           <p>
-            We source only the highest quality ingredients from sustainable suppliers.
-            Each component is tested for purity and potency before entering our
-            formulations.
+            Custom chemical engineering paired with curated vessel sourcing.
           </p>
         </div>
 
-        <!-- Strategy 3 -->
+        <!-- Item 3 -->
         <div class="strategy-item">
-          <div class="strategy-icon">T</div>
-          <h3>Tested Excellence</h3>
+          <h3>Product Design</h3>
           <p>
-            All products undergo comprehensive dermatological testing and clinical
-            trials. We never compromise on safety or efficacy in our pursuit of
-            perfection.
+            Structural and aesthetic blueprinting for visual impact.
           </p>
         </div>
 
-        <!-- Strategy 4 -->
+        <!-- Item 4 -->
         <div class="strategy-item">
-          <div class="strategy-icon">S</div>
-          <h3>Sustainable Practice</h3>
+          <h3>QA & QC Test</h3>
           <p>
-            Environmental responsibility is at our core. From eco-friendly packaging
-            to ethical sourcing, we're committed to protecting the planet while
-            caring for your skin.
+            Rigorous stability testing and quality assurance protocols.
+          </p>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="strategy-item">
+          <h3>Packaging Label Design & Product Registration</h3>
+          <p>
+            Compliant design services and full regulatory documentation.
+          </p>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="strategy-item">
+          <h3>Product Packaging Process</h3>
+          <p>
+            Structural and aesthetic blueprinting for visual impact.
+          </p>
+        </div>
+
+        <!-- Item 7 -->
+        <div class="strategy-item">
+          <h3>Logistic Arrangement</h3>
+          <p>
+            Efficient warehousing and coordinated global distribution.
+          </p>
+        </div>
+
+        <!-- Item 8 -->
+        <div class="strategy-item">
+          <h3>Marketing Consultation & Solution Provider</h3>
+          <p>
+            Strategic positioning, go-to-market planning, and solutions.
+          </p>
+        </div>
+
+        <!-- Item 9 -->
+        <div class="strategy-item">
+          <h3>Sales Training & Business Courses</h3>
+          <p>
+            Educating teams with business insights and product knowledge.
           </p>
         </div>
       </div>

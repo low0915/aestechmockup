@@ -241,6 +241,209 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ===================================
+  // Home Page Product Filtering
+  // ===================================
+  const homeFilterItems = document.querySelectorAll('.home-filter-item');
+  const homeCarousel = document.getElementById('home-products-carousel');
+
+  // Mock data for different categories
+  const categoryContent = {
+    skin: [
+      { id: 'home-p1', title: 'Acne series', img: 'home-p1' },
+      { id: 'home-p2', title: 'Whitening series', img: 'home-p2' },
+      { id: 'home-p3', title: 'Anti aging series', img: 'home-p3' },
+      { id: 'home-p4', title: 'Sensitive series', img: 'home-p4' }
+    ],
+    body: [
+      { id: 'home-p5', title: 'Body Firming', img: 'catalog-p6' },
+      { id: 'home-p6', title: 'Hand Care', img: 'catalog-p3' },
+      { id: 'home-p7', title: 'Body Scrub', img: 'home-p1' }
+    ],
+    hair: [
+      { id: 'home-p8', title: 'Scalp Treatment', img: 'catalog-p1' },
+      { id: 'home-p9', title: 'Nourishing Oil', img: 'catalog-p2' },
+      { id: 'home-p10', title: 'Growth Serum', img: 'catalog-p4' }
+    ],
+    all: [
+      { id: 'home-p1', title: 'Acne series', img: 'home-p1' },
+      { id: 'home-p2', title: 'Whitening series', img: 'home-p2' },
+      { id: 'home-p3', title: 'Anti aging series', img: 'home-p3' },
+      { id: 'home-p5', title: 'Body Firming', img: 'catalog-p6' },
+      { id: 'home-p8', title: 'Scalp Treatment', img: 'catalog-p1' }
+    ]
+  };
+
+  homeFilterItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // update active state
+      homeFilterItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      const filterKey = item.getAttribute('data-filter');
+      updateCarousel(filterKey);
+    });
+  });
+
+  function updateCarousel(category) {
+    if (!homeCarousel) return;
+
+    // Fade out
+    homeCarousel.style.opacity = '0';
+    homeCarousel.style.transition = 'opacity 0.3s ease';
+
+    setTimeout(() => {
+      // Clear existing content (keep the references if needed, but here simple innerHTML rebuild is fine for a mockup)
+      // Note: In a real app we might diff or reorder DOM nodes to preserve state
+
+      const items = categoryContent[category] || categoryContent['skin'];
+
+      // Rebuild HTML
+      let html = '';
+      items.forEach(item => {
+        html += `
+          <div class="home-product-card">
+            <div class="home-product-image">
+              <img src="" alt="${item.title}" id="${item.id}_dynamic">
+            </div>
+            <p class="home-product-title">${item.title}</p>
+          </div>
+        `;
+      });
+
+      // Add end card
+      html += `
+        <div class="home-product-card end-card">
+          <div class="end-card-content">
+            <a href="products.html" class="discover-btn">Discover more →</a>
+          </div>
+        </div>
+      `;
+
+      homeCarousel.innerHTML = html;
+
+      // Regenerate placeholders for new dynamic items
+      items.forEach(item => {
+        const img = document.getElementById(`${item.id}_dynamic`);
+        // Find config for this image or use a default
+        const config = imageConfigs.find(c => c.id === item.img) || imageConfigs[0];
+        if (img && config) {
+          createPlaceholderImage(img, config.gradient, config.text || item.title);
+          // Also prevent default drag on the dynamic image
+          img.addEventListener('dragstart', (e) => e.preventDefault());
+        }
+      });
+
+      // Fade in
+      homeCarousel.style.opacity = '1';
+
+      // Re-initialize drag support for new content
+      initCarouselDrag();
+    }, 300);
+  }
+
+  // ===================================
+  // Carousel Drag Support (Sleek Momentum Edition)
+  // ===================================
+  function initCarouselDrag() {
+    if (!homeCarousel) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let velocity = 0;
+    let lastX = 0;
+    let animationId = null;
+
+    const stopMomentum = () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    };
+
+    const beginMomentum = () => {
+      if (Math.abs(velocity) < 0.5) return;
+
+      homeCarousel.scrollLeft -= velocity;
+      velocity *= 0.95; // Friction
+
+      animationId = requestAnimationFrame(beginMomentum);
+    };
+
+    // Prevent default browser image dragging
+    homeCarousel.querySelectorAll('img').forEach(img => {
+      img.addEventListener('dragstart', (e) => e.preventDefault());
+    });
+
+    homeCarousel.addEventListener('mousedown', (e) => {
+      // If clicking a link, we still want to allow dragging but might need to prevent the click
+      // if a drag actually happened.
+      isDown = true;
+      homeCarousel.classList.add('active-drag');
+      startX = e.pageX - homeCarousel.offsetLeft;
+      scrollLeft = homeCarousel.scrollLeft;
+      lastX = e.pageX;
+      velocity = 0;
+      stopMomentum();
+    });
+
+    homeCarousel.addEventListener('mouseleave', () => {
+      if (isDown) {
+        isDown = false;
+        homeCarousel.classList.remove('active-drag');
+        beginMomentum();
+      }
+    });
+
+    homeCarousel.addEventListener('mouseup', () => {
+      isDown = false;
+      homeCarousel.classList.remove('active-drag');
+      beginMomentum();
+    });
+
+    homeCarousel.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+
+      const x = e.pageX - homeCarousel.offsetLeft;
+      const walk = (x - startX);
+      homeCarousel.scrollLeft = scrollLeft - walk;
+
+      // Track velocity
+      velocity = e.pageX - lastX;
+      lastX = e.pageX;
+    });
+
+    // Touch events
+    homeCarousel.addEventListener('touchstart', (e) => {
+      isDown = true;
+      startX = e.touches[0].pageX - homeCarousel.offsetLeft;
+      scrollLeft = homeCarousel.scrollLeft;
+      lastX = e.touches[0].pageX;
+      velocity = 0;
+      stopMomentum();
+    }, { passive: true });
+
+    homeCarousel.addEventListener('touchend', () => {
+      isDown = false;
+      beginMomentum();
+    }, { passive: true });
+
+    homeCarousel.addEventListener('touchmove', (e) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - homeCarousel.offsetLeft;
+      const walk = (x - startX);
+      homeCarousel.scrollLeft = scrollLeft - walk;
+
+      velocity = e.touches[0].pageX - lastX;
+      lastX = e.touches[0].pageX;
+    }, { passive: true });
+  }
+
+  // Initial call
+  initCarouselDrag();
+
+  // ===================================
   // Generate Placeholder Images
   // ===================================
   const imageConfigs = [
@@ -249,6 +452,11 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'product-moisturizers', gradient: 'linear-gradient(135deg, #f8f8f8 0%, #ececec 100%)', text: 'HYDRATION' },
     { id: 'product-cleansers', gradient: 'linear-gradient(135deg, #fafafa 0%, #e8e8e8 100%)', text: 'CLEANSERS' },
     { id: 'product-treatments', gradient: 'linear-gradient(135deg, #f5f5f5 0%, #efefef 100%)', text: 'TREATMENTS' },
+    // Home Page Carousel
+    { id: 'home-p1', gradient: 'linear-gradient(135deg, #f0f0f0 0%, #dddddd 100%)', text: 'ACNE' },
+    { id: 'home-p2', gradient: 'linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%)', text: 'WHITE' },
+    { id: 'home-p3', gradient: 'linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%)', text: 'AGE' },
+    { id: 'home-p4', gradient: 'linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%)', text: 'SENS' },
     // Banner Backgrounds
     { id: 'banner-bg-1', gradient: 'linear-gradient(135deg, #e8e8e8 0%, #d8d8d8 100%)', text: '' },
     { id: 'banner-bg-2', gradient: 'linear-gradient(135deg, #e0e0e0 0%, #d0d0d0 100%)', text: '' },

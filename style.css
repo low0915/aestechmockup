@@ -789,7 +789,7 @@ p {
 
 /* Header */
 .testimonials-header {
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
   max-width: 600px;
 }
 
@@ -986,8 +986,10 @@ p {
 }
 
 .gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--space-lg);
-  max-width: 600px;
 }
 
 .gallery-header h2 span {
@@ -1039,6 +1041,36 @@ p {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   border-color: #000;
 }
+
+.gallery-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 120%);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-md);
+  pointer-events: none;
+}
+
+.gallery-item-title {
+  color: var(--color-pure-white);
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
 
 @media (max-width: 1024px) {
   .gallery-grid {
@@ -1476,7 +1508,7 @@ p {
   max-width: 1440px;
   margin: 0 auto var(--space-lg);
   padding: 0 40px;
-  height: 350px;
+  height: 400px;
   overflow: hidden;
   cursor: grab;
   user-select: none;
@@ -1517,6 +1549,26 @@ p {
   background-color: var(--color-light-gray);
   background-size: cover;
   background-position: center;
+}
+
+#banner-bg-1 {
+  background-image: url('images/slider-1.png');
+  background-position: center center;
+  /* Adjust: left, right, top, bottom, or % */
+  background-size: cover;
+  /* Adjust: contain, auto, or % */
+}
+
+#banner-bg-2 {
+  background-image: url('images/slider-2.png');
+  background-position: bottom center;
+  background-size: cover;
+}
+
+#banner-bg-3 {
+  background-image: url('images/slider-3.png');
+  background-position: center center;
+  background-size: cover;
 }
 
 .banner-overlay {
@@ -1663,6 +1715,8 @@ p {
   transition: var(--transition-base);
   opacity: 1;
   transform: translateY(0);
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 400px;
 }
 
 .product-catalog-card.hide {
@@ -1754,30 +1808,67 @@ p {
 
 /* Pagination */
 .catalog-pagination {
-  border-top: 1px solid var(--color-light-gray);
-  padding: var(--space-md) 0;
+  padding-top: var(--space-md);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-md);
   margin-bottom: var(--space-lg);
 }
 
-.pagination-list {
-  display: flex;
-  list-style: none;
-  gap: var(--space-md);
-}
-
-.pagination-list li {
-  font-size: 0.8rem;
-  color: var(--color-medium-gray);
+.nav-prev,
+.nav-next {
+  background: none;
+  border: 1px solid transparent;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-dark-gray);
   cursor: pointer;
   transition: var(--transition-fast);
+  padding: 8px 16px;
+  letter-spacing: 0.05em;
 }
 
-.pagination-list li:hover,
-.pagination-list li.active {
+.nav-prev:hover,
+.nav-next:hover {
   color: var(--color-pure-black);
-  text-decoration: underline;
+  border-color: var(--color-light-gray);
+}
+
+.nav-prev:disabled,
+.nav-next:disabled {
+  color: var(--color-light-gray);
+  cursor: not-allowed;
+  border-color: transparent;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.page-num {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-dark-gray);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: 4px;
+}
+
+.page-num:hover {
+  background-color: var(--color-off-white);
+  color: var(--color-pure-black);
+}
+
+.page-num.active {
+  background-color: var(--color-pure-black);
+  color: var(--color-pure-white);
 }
 
 /* Responsive Grid */
@@ -1998,7 +2089,8 @@ p {
     /* Normal padding */
   }
 
-  .products-header-row {
+  .products-header-row,
+  .gallery-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-sm);

@@ -8,19 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // Navbar Scroll Effect
   // ===================================
   const navbar = document.getElementById('navbar');
-  let lastScroll = 0;
+  let ticking = false;
 
   window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > 100) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 100) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
-
-    lastScroll = currentScroll;
-  });
+  }, { passive: true });
 
   // ===================================
   // Smooth Scroll for Navigation Links
@@ -107,33 +110,135 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===================================
   // Product Filtering Logic
   // ===================================
+  // ===================================
+  // Product Filtering & Pagination Logic
+  // ===================================
   const filterItems = document.querySelectorAll('.filter-item');
   const catalogCards = document.querySelectorAll('.product-catalog-card');
+  const paginationContainer = document.getElementById('pagination-container');
 
+  const ITEMS_PER_PAGE = 9;
+  let currentPage = 1;
+  let currentFilter = 'all';
+
+  function renderPagination() {
+    currentPage = 1; // Reset to page 1 on filter change
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    // 1. Identify which cards match the current filter
+    const matches = [];
+    catalogCards.forEach(card => {
+      const category = card.getAttribute('data-category');
+      if (currentFilter === 'all' || category === currentFilter) {
+        matches.push(card);
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // 2. Calculate pagination slices
+    const totalItems = matches.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+    // Ensure currentPage is valid
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+    if (currentPage < 1) currentPage = 1;
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    // 3. Show/Hide items based on page slice
+    matches.forEach((card, index) => {
+      if (index >= startIndex && index < endIndex) {
+        card.style.display = 'block';
+        // trigger reflow for animation if needed, or just set opacity
+        // simple fade in effect
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        // specific timeout to allow display:block to apply
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 50);
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // 4. Render Pagination Controls
+    if (totalPages > 1) {
+      let paginationHTML = `
+        <button class="nav-prev" ${currentPage === 1 ? 'disabled' : ''}>&larr; Prev</button>
+        <div class="page-numbers">
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<span class="page-num ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</span>`;
+      }
+
+      paginationHTML += `
+        </div>
+        <button class="nav-next" ${currentPage === totalPages ? 'disabled' : ''}>Next &rarr;</button>
+      `;
+
+      paginationContainer.innerHTML = paginationHTML;
+      paginationContainer.style.display = 'flex';
+
+      // Attach event listeners to new controls
+      const newPrev = paginationContainer.querySelector('.nav-prev');
+      const newNext = paginationContainer.querySelector('.nav-next');
+      const newPages = paginationContainer.querySelectorAll('.page-num');
+
+      newPrev.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          updateDisplay();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+
+      newNext.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateDisplay();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+
+      newPages.forEach(p => {
+        p.addEventListener('click', (e) => {
+          const page = parseInt(e.target.dataset.page);
+          if (page !== currentPage) {
+            currentPage = page;
+            updateDisplay();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+      });
+
+    } else {
+      paginationContainer.innerHTML = '';
+      paginationContainer.style.display = 'none';
+    }
+  }
+
+  // Initial Render
+  updateDisplay();
+
+  // Filter Click Events
   filterItems.forEach(item => {
     item.addEventListener('click', () => {
       // Update active state
       filterItems.forEach(i => i.classList.remove('active'));
       item.classList.add('active');
 
-      const filterValue = item.getAttribute('data-filter');
+      // Update Filter Value
+      currentFilter = item.getAttribute('data-filter');
 
-      catalogCards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px)';
-
-        setTimeout(() => {
-          if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-            card.style.display = 'block';
-            setTimeout(() => {
-              card.style.opacity = '1';
-              card.style.transform = 'translateY(0)';
-            }, 50);
-          } else {
-            card.style.display = 'none';
-          }
-        }, 300);
-      });
+      // Reset and Render
+      renderPagination();
     });
   });
 
@@ -456,50 +561,65 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enable Drag
     initDrag(testimonialTrack);
 
-    // Progress Bar and Active State Logic
-    testimonialTrack.addEventListener('scroll', () => {
-      const scrollLeft = testimonialTrack.scrollLeft;
-      const maxScroll = testimonialTrack.scrollWidth - testimonialTrack.clientWidth;
-
-      // Update Progress Bar
-      // Simple ratio: scroll / max
-      const percent = (scrollLeft / maxScroll) * 100;
-      // We want the fill to move. The fill width is 33% (approx 1/3).
-      // If we move left, it goes from 0% to 66% (100% - 33%).
-      const maxTranslate = 100 - 33;
-      const movePercent = (scrollLeft / maxScroll) * maxTranslate;
-      testimonialProgress.style.left = `${Math.min(Math.max(movePercent, 0), maxTranslate)}%`;
-
-      // Update Active State
-      // Find which card is closest to the left edge
-      carouselTestimonialCards.forEach(card => {
-        const cardLeft = card.offsetLeft;
-        const cardWidth = card.offsetWidth;
-        // Adjust threshold as needed
-        if (cardLeft >= scrollLeft - cardWidth / 2 && cardLeft < scrollLeft + cardWidth / 2) {
-          carouselTestimonialCards.forEach(c => c.classList.remove('active'));
-          card.classList.add('active');
-        }
-      });
-    });
-
     // Arrow Controls
     const prevBtn = document.getElementById('prev-testimonial');
     const nextBtn = document.getElementById('next-testimonial');
 
     if (prevBtn && nextBtn) {
       nextBtn.addEventListener('click', () => {
-        const cardWidth = carouselTestimonialCards[0].offsetWidth;
+        const cards = document.querySelectorAll('.testimonial-card'); // Refresh list
+        const cardWidth = cards[0].offsetWidth;
         const gap = 32; // var(--space-md)
-        testimonialTrack.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
+        const maxScroll = testimonialTrack.scrollWidth - testimonialTrack.clientWidth;
+
+        if (testimonialTrack.scrollLeft >= maxScroll - 10) {
+          testimonialTrack.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          testimonialTrack.scrollBy({ left: cardWidth + gap, behavior: 'smooth' });
+        }
       });
 
       prevBtn.addEventListener('click', () => {
-        const cardWidth = carouselTestimonialCards[0].offsetWidth;
+        const cards = document.querySelectorAll('.testimonial-card'); // Refresh list
+        const cardWidth = cards[0].offsetWidth;
         const gap = 32; // var(--space-md)
-        testimonialTrack.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+        const maxScroll = testimonialTrack.scrollWidth - testimonialTrack.clientWidth;
+
+        if (testimonialTrack.scrollLeft <= 10) {
+          testimonialTrack.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        } else {
+          testimonialTrack.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
+        }
       });
     }
+
+    // Improve Active State Logic to be more forgiving at ends
+    testimonialTrack.addEventListener('scroll', () => {
+      const cards = document.querySelectorAll('.testimonial-card');
+      const scrollLeft = testimonialTrack.scrollLeft;
+      const maxScroll = testimonialTrack.scrollWidth - testimonialTrack.clientWidth;
+
+      // Update Progress Bar
+      const percent = (scrollLeft / maxScroll) * 100;
+      const maxTranslate = 100 - (100 / cards.length); // Dynamic track width
+      const movePercent = (scrollLeft / maxScroll) * maxTranslate;
+      testimonialProgress.style.width = `${100 / cards.length}%`; // Adjust bar width
+      testimonialProgress.style.left = `${Math.min(Math.max(movePercent, 0), maxTranslate)}%`;
+
+      // Update Active State
+      cards.forEach(card => {
+        const cardLeft = card.offsetLeft;
+        const cardWidth = card.offsetWidth;
+        const trackLeft = testimonialTrack.getBoundingClientRect().left;
+        const cardRelativeLeft = card.getBoundingClientRect().left - trackLeft;
+
+        // If card is roughly at the start of the visible area
+        if (Math.abs(cardRelativeLeft) < cardWidth / 2) {
+          cards.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+        }
+      });
+    });
   }
 
   // ===================================
@@ -516,10 +636,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'home-p2', gradient: 'linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%)', text: 'WHITE' },
     { id: 'home-p3', gradient: 'linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%)', text: 'AGE' },
     { id: 'home-p4', gradient: 'linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%)', text: 'SENS' },
-    // Banner Backgrounds
-    { id: 'banner-bg-1', gradient: 'linear-gradient(135deg, #e8e8e8 0%, #d8d8d8 100%)', text: '' },
-    { id: 'banner-bg-2', gradient: 'linear-gradient(135deg, #e0e0e0 0%, #d0d0d0 100%)', text: '' },
-    { id: 'banner-bg-3', gradient: 'linear-gradient(135deg, #e5e5e5 0%, #d5d5d5 100%)', text: '' },
+    { id: 'home-p4', gradient: 'linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%)', text: 'SENS' },
+    // Banner Backgrounds handled in CSS now
     // Catalog Images
     { id: 'catalog-p1', gradient: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)', text: 'TONIC' },
     { id: 'catalog-p2', gradient: 'linear-gradient(135deg, #e8e8e8 0%, #d8d8d8 100%)', text: 'OIL' },

@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Initial Render
-  updateDisplay();
+  if (paginationContainer) updateDisplay();
 
   // Filter Click Events
   filterItems.forEach(item => {

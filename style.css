@@ -1538,9 +1538,11 @@ p {
   margin: 0 auto var(--space-lg);
   padding: 0 40px;
   height: 400px;
+  min-height: 400px;
   overflow: hidden;
   cursor: grab;
   user-select: none;
+  display: block;
 }
 
 .product-banner-slider:active {
@@ -1583,9 +1585,7 @@ p {
 #banner-bg-1 {
   background-image: url('images/slider-1.png');
   background-position: center center;
-  /* Adjust: left, right, top, bottom, or % */
   background-size: cover;
-  /* Adjust: contain, auto, or % */
 }
 
 #banner-bg-2 {
@@ -1741,11 +1741,12 @@ p {
 }
 
 .product-catalog-card {
-  transition: var(--transition-base);
+  transition: transform 0.4s ease, opacity 0.4s ease;
   opacity: 1;
   transform: translateY(0);
   content-visibility: auto;
-  contain-intrinsic-size: 1px 400px;
+  contain-intrinsic-size: auto 450px;
+  will-change: transform, opacity;
 }
 
 .product-catalog-card.hide {
@@ -1764,7 +1765,8 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: var(--transition-slow);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .product-catalog-card:hover .catalog-img {

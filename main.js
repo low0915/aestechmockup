@@ -5,6 +5,114 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ===================================
+  // Banner Slider Logic (Scoped)
+  // ===================================
+  const bannerSlider = document.querySelector('.product-banner-slider');
+  const slides = document.querySelectorAll('.banner-slide');
+  const dots = document.querySelectorAll('.dot');
+  let currentSlide = 0;
+  let slideInterval;
+
+  if (bannerSlider && slides.length > 0) {
+    console.log("Initializing Banner Slider");
+
+    function showSlide(index) {
+      // Remove active class from all slides and dots
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+
+      // Add active class to current slide and dot
+      if (slides[index]) {
+        slides[index].classList.add('active');
+      }
+      if (dots[index]) {
+        dots[index].classList.add('active');
+      }
+
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      let next = (currentSlide + 1) % slides.length;
+      showSlide(next);
+    }
+
+    // Auto-advance slides every 5 seconds
+    function startSlideshow() {
+      slideInterval = setInterval(nextSlide, 5000);
+    }
+
+    function stopSlideshow() {
+      clearInterval(slideInterval);
+    }
+
+    // Manual navigation with dots
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        stopSlideshow();
+        showSlide(index);
+        startSlideshow();
+      });
+    });
+
+    // ===================================
+    // Drag and Touch Support for Slider
+    // ===================================
+    const slider = document.querySelector('.product-banner-slider');
+    let isDragging = false;
+    let startX = 0;
+    let moveX = 0;
+
+    function handleDragStart(e) {
+      isDragging = true;
+      startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+      slider.style.cursor = 'grabbing';
+      stopSlideshow();
+    }
+
+    function handleDragMove(e) {
+      if (!isDragging) return;
+      moveX = (e.type === 'touchmove' ? e.touches[0].clientX : e.clientX) - startX;
+    }
+
+    function handleDragEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      slider.style.cursor = 'grab';
+
+      // Threshold for slide change (50 pixels)
+      if (moveX > 50) {
+        // Prev slide
+        let prev = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prev);
+      } else if (moveX < -50) {
+        // Next slide
+        nextSlide();
+      }
+
+      moveX = 0;
+      startSlideshow();
+    }
+
+    if (slider) {
+      // Mouse events
+      slider.addEventListener('mousedown', handleDragStart);
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+
+      // Touch events
+      slider.addEventListener('touchstart', handleDragStart);
+      slider.addEventListener('touchmove', handleDragMove);
+      slider.addEventListener('touchend', handleDragEnd);
+    }
+
+    // Start the slideshow if slides exist
+    if (slides.length > 0) {
+      showSlide(0); // Ensure first slide is active
+      startSlideshow();
+    }
+  }
+
   // Navbar Scroll Effect
   // ===================================
   const navbar = document.getElementById('navbar');
@@ -67,12 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Observe product cards with stagger effect
-  const productCards = document.querySelectorAll('.product-card');
+  const productCards = document.querySelectorAll('.product-card, .product-catalog-card');
   productCards.forEach((card, index) => {
+    // Only set initial styles if not already visible/active
+    if (window.getComputedStyle(card).opacity === '1') return;
+
     card.style.opacity = '0';
     card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    card.style.transitionDelay = `${index * 0.1}s`;
+    card.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    card.style.transitionDelay = `${(index % 9) * 0.05}s`;
     observer.observe(card);
   });
 
@@ -153,17 +264,13 @@ document.addEventListener('DOMContentLoaded', () => {
     matches.forEach((card, index) => {
       if (index >= startIndex && index < endIndex) {
         card.style.display = 'block';
-        // trigger reflow for animation if needed, or just set opacity
-        // simple fade in effect
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px)';
-        // specific timeout to allow display:block to apply
-        setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, 50);
+        // Reset observer to trigger animation if card was already observed
+        observer.unobserve(card);
+        observer.observe(card);
       } else {
         card.style.display = 'none';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
       }
     });
 
@@ -241,109 +348,6 @@ document.addEventListener('DOMContentLoaded', () => {
       renderPagination();
     });
   });
-
-  // ===================================
-  // Banner Slider Logic
-  // ===================================
-  const slides = document.querySelectorAll('.banner-slide');
-  const dots = document.querySelectorAll('.dot');
-  let currentSlide = 0;
-  let slideInterval;
-
-  function showSlide(index) {
-    // Remove active class from all slides and dots
-    slides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
-
-    // Add active class to current slide and dot
-    if (slides[index]) {
-      slides[index].classList.add('active');
-    }
-    if (dots[index]) {
-      dots[index].classList.add('active');
-    }
-
-    currentSlide = index;
-  }
-
-  function nextSlide() {
-    let next = (currentSlide + 1) % slides.length;
-    showSlide(next);
-  }
-
-  // Auto-advance slides every 5 seconds
-  function startSlideshow() {
-    slideInterval = setInterval(nextSlide, 5000);
-  }
-
-  function stopSlideshow() {
-    clearInterval(slideInterval);
-  }
-
-  // Manual navigation with dots
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-      stopSlideshow();
-      showSlide(index);
-      startSlideshow();
-    });
-  });
-
-  // ===================================
-  // Drag and Touch Support for Slider
-  // ===================================
-  const slider = document.querySelector('.product-banner-slider');
-  let isDragging = false;
-  let startX = 0;
-  let moveX = 0;
-
-  function handleDragStart(e) {
-    isDragging = true;
-    startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-    slider.style.cursor = 'grabbing';
-    stopSlideshow();
-  }
-
-  function handleDragMove(e) {
-    if (!isDragging) return;
-    moveX = (e.type === 'touchmove' ? e.touches[0].clientX : e.clientX) - startX;
-  }
-
-  function handleDragEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    slider.style.cursor = 'grab';
-
-    // Threshold for slide change (50 pixels)
-    if (moveX > 50) {
-      // Prev slide
-      let prev = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(prev);
-    } else if (moveX < -50) {
-      // Next slide
-      nextSlide();
-    }
-
-    moveX = 0;
-    startSlideshow();
-  }
-
-  if (slider) {
-    // Mouse events
-    slider.addEventListener('mousedown', handleDragStart);
-    window.addEventListener('mousemove', handleDragMove);
-    window.addEventListener('mouseup', handleDragEnd);
-
-    // Touch events
-    slider.addEventListener('touchstart', handleDragStart);
-    slider.addEventListener('touchmove', handleDragMove);
-    slider.addEventListener('touchend', handleDragEnd);
-  }
-
-  // Start the slideshow if slides exist
-  if (slides.length > 0) {
-    startSlideshow();
-  }
 
   // ===================================
   // Home Page Product Filtering
@@ -594,32 +598,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Improve Active State Logic to be more forgiving at ends
+    let testimonialTicking = false;
     testimonialTrack.addEventListener('scroll', () => {
-      const cards = document.querySelectorAll('.testimonial-card');
-      const scrollLeft = testimonialTrack.scrollLeft;
-      const maxScroll = testimonialTrack.scrollWidth - testimonialTrack.clientWidth;
+      if (!testimonialTicking) {
+        window.requestAnimationFrame(() => {
+          const cards = document.querySelectorAll('.testimonial-card');
+          const scrollLeft = testimonialTrack.scrollLeft;
+          const maxScroll = testimonialTrack.scrollWidth - testimonialTrack.clientWidth;
 
-      // Update Progress Bar
-      const percent = (scrollLeft / maxScroll) * 100;
-      const maxTranslate = 100 - (100 / cards.length); // Dynamic track width
-      const movePercent = (scrollLeft / maxScroll) * maxTranslate;
-      testimonialProgress.style.width = `${100 / cards.length}%`; // Adjust bar width
-      testimonialProgress.style.left = `${Math.min(Math.max(movePercent, 0), maxTranslate)}%`;
+          // Update Progress Bar
+          const percent = (scrollLeft / maxScroll) * 100;
+          const maxTranslate = 100 - (100 / cards.length); // Dynamic track width
+          const movePercent = (scrollLeft / maxScroll) * maxTranslate;
+          testimonialProgress.style.width = `${100 / cards.length}%`; // Adjust bar width
+          testimonialProgress.style.left = `${Math.min(Math.max(movePercent, 0), maxTranslate)}%`;
 
-      // Update Active State
-      cards.forEach(card => {
-        const cardLeft = card.offsetLeft;
-        const cardWidth = card.offsetWidth;
-        const trackLeft = testimonialTrack.getBoundingClientRect().left;
-        const cardRelativeLeft = card.getBoundingClientRect().left - trackLeft;
+          // Update Active State
+          const trackRect = testimonialTrack.getBoundingClientRect();
+          cards.forEach(card => {
+            const cardWidth = card.offsetWidth;
+            const cardRelativeLeft = card.getBoundingClientRect().left - trackRect.left;
 
-        // If card is roughly at the start of the visible area
-        if (Math.abs(cardRelativeLeft) < cardWidth / 2) {
-          cards.forEach(c => c.classList.remove('active'));
-          card.classList.add('active');
-        }
-      });
-    });
+            // If card is roughly at the start of the visible area
+            if (Math.abs(cardRelativeLeft) < cardWidth / 2) {
+              cards.forEach(c => c.classList.remove('active'));
+              card.classList.add('active');
+            }
+          });
+          testimonialTicking = false;
+        });
+        testimonialTicking = true;
+      }
+    }, { passive: true });
   }
 
   // ===================================

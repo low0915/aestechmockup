@@ -412,9 +412,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ],
     all: [
       { id: 'home-p1', title: 'Acne Series', imgPath: 'images/Skin/Acne Series/Skin Care_30.png' },
-      { id: 'home-p5', title: 'Body Care', imgPath: 'images/Body/Body Care Series/Skin Care_38.png' },
-      { id: 'home-p8', title: 'Scalp Care', imgPath: 'images/Hair/Scalp Care Series/Skin Care_48.png' },
-      { id: 'home-p2', title: 'Whitening', imgPath: 'images/Skin/Whitening Series/Skin Care_56.png' }
+      { id: 'home-p5', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_38.png' },
+      { id: 'home-p8', title: 'Scalp Care Series', imgPath: 'images/Hair/Scalp Care Series/Skin Care_48.png' },
+      { id: 'home-p2', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_56.png' }
     ]
   };
 

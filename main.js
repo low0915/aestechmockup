@@ -370,10 +370,10 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'home-p4', title: 'Pore Refining Toner', imgPath: 'images/Skin/Acne Series/Skin Care_35.png' }
     ],
     whitening: [
-      { id: 'home-p1', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_56.png' },
-      { id: 'home-p2', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_57.png' },
-      { id: 'home-p3', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_58.png' },
-      { id: 'home-p4', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_61.png' }
+      { id: 'home-p1', title: 'Lumiere Radiance Cream', imgPath: 'images/Skin/Whitening Series/Skin Care_56.png' },
+      { id: 'home-p2', title: 'Brightening Spot Corrector', imgPath: 'images/Skin/Whitening Series/Skin Care_57.png' },
+      { id: 'home-p3', title: 'Pearl Essence Mask', imgPath: 'images/Skin/Whitening Series/Skin Care_58.png' },
+      { id: 'home-p4', title: 'Vitamin C Glow Serum', imgPath: 'images/Skin/Whitening Series/Skin Care_61.png' }
     ],
     'anti-aging': [
       { id: 'home-p1', title: 'Anti Aging Series', imgPath: 'images/Skin/Anti Aging Series/Skin Care_13.png' },
@@ -393,9 +393,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'home-p7', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_40.png' }
     ],
     'body-care': [
-      { id: 'home-p5', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_38.png' },
-      { id: 'home-p6', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_39.png' },
-      { id: 'home-p7', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_40.png' }
+      { id: 'home-p5', title: 'Velvet Touch Body Oil', imgPath: 'images/Body/Body Care Series/Skin Care_38.png' },
+      { id: 'home-p6', title: 'Sculpting Firming Lotion', imgPath: 'images/Body/Body Care Series/Skin Care_39.png' },
+      { id: 'home-p7', title: 'Silk Glow Body Butter', imgPath: 'images/Body/Body Care Series/Skin Care_40.png' }
     ],
     hair: [
       { id: 'home-p8', title: 'Scalp Care Series', imgPath: 'images/Hair/Scalp Care Series/Skin Care_48.png' },

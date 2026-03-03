@@ -363,7 +363,36 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'home-p3', title: 'Anti Aging Series', imgPath: 'images/Skin/Anti Aging Series/Skin Care_13.png' },
       { id: 'home-p4', title: 'Sensitive Series', imgPath: 'images/Skin/Sensitive Series/Skin Care_21.png' }
     ],
+    acne: [
+      { id: 'home-p1', title: 'Acne Series', imgPath: 'images/Skin/Acne Series/Skin Care_30.png' },
+      { id: 'home-p2', title: 'Acne Series', imgPath: 'images/Skin/Acne Series/Skin Care_31.png' },
+      { id: 'home-p3', title: 'Acne Series', imgPath: 'images/Skin/Acne Series/Skin Care_32.png' },
+      { id: 'home-p4', title: 'Acne Series', imgPath: 'images/Skin/Acne Series/Skin Care_35.png' }
+    ],
+    whitening: [
+      { id: 'home-p1', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_56.png' },
+      { id: 'home-p2', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_57.png' },
+      { id: 'home-p3', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_58.png' },
+      { id: 'home-p4', title: 'Whitening Series', imgPath: 'images/Skin/Whitening Series/Skin Care_61.png' }
+    ],
+    'anti-aging': [
+      { id: 'home-p1', title: 'Anti Aging Series', imgPath: 'images/Skin/Anti Aging Series/Skin Care_13.png' },
+      { id: 'home-p2', title: 'Anti Aging Series', imgPath: 'images/Skin/Anti Aging Series/Skin Care_14.png' },
+      { id: 'home-p3', title: 'Anti Aging Series', imgPath: 'images/Skin/Anti Aging Series/Skin Care_15.png' },
+      { id: 'home-p4', title: 'Anti Aging Series', imgPath: 'images/Skin/Anti Aging Series/Skin Care_16.png' }
+    ],
+    sensitive: [
+      { id: 'home-p1', title: 'Sensitive Series', imgPath: 'images/Skin/Sensitive Series/Skin Care_21.png' },
+      { id: 'home-p2', title: 'Sensitive Series', imgPath: 'images/Skin/Sensitive Series/Skin Care_22.png' },
+      { id: 'home-p3', title: 'Sensitive Series', imgPath: 'images/Skin/Sensitive Series/Skin Care_23.png' },
+      { id: 'home-p4', title: 'Sensitive Series', imgPath: 'images/Skin/Sensitive Series/Skin Care_25.png' }
+    ],
     body: [
+      { id: 'home-p5', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_38.png' },
+      { id: 'home-p6', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_39.png' },
+      { id: 'home-p7', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_40.png' }
+    ],
+    'body-care': [
       { id: 'home-p5', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_38.png' },
       { id: 'home-p6', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_39.png' },
       { id: 'home-p7', title: 'Body Care Series', imgPath: 'images/Body/Body Care Series/Skin Care_40.png' }
@@ -372,6 +401,13 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'home-p8', title: 'Scalp Care Series', imgPath: 'images/Hair/Scalp Care Series/Skin Care_48.png' },
       { id: 'home-p9', title: 'Hair Growth Series', imgPath: 'images/Hair/Hair Growth Series/Skin Care_46.png' },
       { id: 'home-p10', title: 'Scalp Care Series', imgPath: 'images/Hair/Scalp Care Series/Skin Care_49.png' }
+    ],
+    'scalp-care': [
+      { id: 'home-p8', title: 'Scalp Care Series', imgPath: 'images/Hair/Scalp Care Series/Skin Care_48.png' },
+      { id: 'home-p10', title: 'Scalp Care Series', imgPath: 'images/Hair/Scalp Care Series/Skin Care_49.png' }
+    ],
+    'hair-growth': [
+      { id: 'home-p9', title: 'Hair Growth Series', imgPath: 'images/Hair/Hair Growth Series/Skin Care_46.png' }
     ],
     all: [
       { id: 'home-p1', title: 'Acne Series', imgPath: 'images/Skin/Acne Series/Skin Care_30.png' },
@@ -387,15 +423,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // If it's a main category with sub-filters, toggle it
       if (parentNode) {
-        const isCurrentlyActive = parentNode.classList.contains('active');
+        // Only toggle if we explicitly clicked the main category label (div.home-filter-item)
+        if (e.target.classList.contains('home-filter-item')) {
+          const isCurrentlyActive = parentNode.classList.contains('active');
 
-        // Close other nodes
-        document.querySelectorAll('.home-filter-node').forEach(node => {
-          if (node !== parentNode) node.classList.remove('active');
-        });
+          // Close other nodes
+          document.querySelectorAll('.home-filter-node').forEach(node => {
+            if (node !== parentNode) node.classList.remove('active');
+          });
 
-        // Toggle current node
-        parentNode.classList.toggle('active');
+          // Toggle current node
+          parentNode.classList.toggle('active');
+        }
       } else {
         // If "All Categories" is clicked, close all dropdowns
         document.querySelectorAll('.home-filter-node').forEach(node => {
@@ -405,9 +444,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Update active state for styling
       homeFilterItems.forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.sub-filter-item').forEach(i => i.classList.remove('active'));
       item.classList.add('active');
 
       const filterKey = item.getAttribute('data-filter');
+      updateCarousel(filterKey);
+    });
+  });
+
+  // Sub-filter Click Events
+  const subFilterItems = document.querySelectorAll('.sub-filter-item');
+  subFilterItems.forEach(subItem => {
+    subItem.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent main category toggle
+
+      // Update active state
+      homeFilterItems.forEach(i => i.classList.remove('active'));
+      subFilterItems.forEach(i => i.classList.remove('active'));
+      subItem.classList.add('active');
+
+      // Ensure parent main item also looks active (optional, but good UX)
+      const parentNode = subItem.closest('.home-filter-node');
+      if (parentNode) {
+        const mainItem = parentNode.querySelector('.home-filter-item');
+        if (mainItem) mainItem.classList.add('active');
+      }
+
+      const filterKey = subItem.getAttribute('data-filter');
       updateCarousel(filterKey);
     });
   });

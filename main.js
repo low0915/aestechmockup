@@ -610,28 +610,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Touch events
-    element.addEventListener('touchstart', (e) => {
-      isDown = true;
-      startX = e.touches[0].pageX - element.offsetLeft;
-      scrollLeft = element.scrollLeft;
-      lastX = e.touches[0].pageX;
-      velocity = 0;
+    // Relying on native momentum scrolling for touch devices for optimal performance
+    element.addEventListener('touchstart', () => {
       stopMomentum();
-    }, { passive: true });
-
-    element.addEventListener('touchend', () => {
-      isDown = false;
-      beginMomentum();
-    }, { passive: true });
-
-    element.addEventListener('touchmove', (e) => {
-      if (!isDown) return;
-      const x = e.touches[0].pageX - element.offsetLeft;
-      const walk = (x - startX);
-      element.scrollLeft = scrollLeft - walk;
-
-      velocity = e.touches[0].pageX - lastX;
-      lastX = e.touches[0].pageX;
     }, { passive: true });
   }
 
